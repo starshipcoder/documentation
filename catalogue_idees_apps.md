@@ -12,11 +12,6 @@
 - 🛠️ **Difficulté technique**: 6/10 (algorithme de détection cardiaque via caméra, calibration)
 - 📢 **Difficulté marketing**: 7/10 (marché de niche, concurrence établie, besoin de crédibilité médicale)
 
-### **Vibrating Massager**
-- App de massage vibrant
-- **Inspiration**: iFeel Vibrating Massager (lien Flippa)
-- 🛠️ **Difficulté technique**: 2/10 (très simple, contrôle de vibration)
-- 📢 **Difficulté marketing**: 5/10 (marché saturé, mais ASO peut suffire)
 
 ### **Perte de poids** (idée vague à creuser)
 - 🛠️ **Difficulté technique**: 5/10
