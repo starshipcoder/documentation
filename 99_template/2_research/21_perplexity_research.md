@@ -1,3 +1,8 @@
+# [NOM APP] - Recherche Marché
+
+## Prompt Perplexity
+
+```
 **Contexte**
 Je souhaite évaluer l'opportunité de lancer une application mobile : [DÉCRIRE TON IDÉE EN 2-3 PHRASES PRÉCISES]
 
@@ -54,9 +59,9 @@ Pour chaque concurrent majeur (top 5), détailler :
     - [Titre source](URL) - Date publication - Date d'accès
     - Minimum 12-20 sources variées
 - Distinguer clairement :
-    - ✅ Faits sourcés
-    - 📊 Estimations (indiquer méthodologie)
-    - 💭 Inférences (marquer explicitement)
+    - Faits sourcés
+    - Estimations (indiquer méthodologie)
+    - Inférences (marquer explicitement)
 
 **Terminer par : "Top 7 insights actionnables"**
 Liste numérotée des découvertes les plus importantes pour la décision GO/NO-GO.
@@ -65,3 +70,27 @@ Liste numérotée des découvertes les plus importantes pour la décision GO/NO-
 - Privilégier les sources primaires : App Store, Play Store, sites officiels des concurrents, rapports publics (Sensor Tower, data.ai, Statista), articles spécialisés
 - Éviter : articles génériques marketing, données > 18 mois, sources non vérifiables
 - Si une donnée n'est pas disponible publiquement : l'indiquer explicitement plutôt que d'inventer
+```
+
+---
+
+## Résultats de la Recherche
+
+[COLLER ICI LES RÉSULTATS COMPLETS DE PERPLEXITY]
+
+---
+
+## Top 7 Insights Actionnables
+
+1. [Insight 1]
+2. [Insight 2]
+3. [Insight 3]
+4. [Insight 4]
+5. [Insight 5]
+6. [Insight 6]
+7. [Insight 7]
+
+---
+
+**Date recherche** : [JJ/MM/AAAA]
+**Sources utilisées** : [Nombre]
