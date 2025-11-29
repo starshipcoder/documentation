@@ -1,14 +1,14 @@
-# [NOM APP] - Cahier des Charges Fonctionnel
+# FuelMap - Cahier des Charges Fonctionnel (MVP)
 
 ## Informations Générales
 
 | Élément | Valeur |
 |---------|--------|
-| **Nom de l'app** | [Nom] |
+| **Nom de l'app** | FuelMap |
 | **Version** | MVP v1.0 |
-| **Plateformes** | iOS / Android |
-| **Date création** | [JJ/MM/AAAA] |
-| **Dernière MAJ** | [JJ/MM/AAAA] |
+| **Plateformes** | iOS / Android (React Native) |
+| **Date création** | 29/11/2025 |
+| **Scope** | Must Have uniquement (M1-M8) |
 
 ---
 
@@ -16,19 +16,19 @@
 
 ### 1.1 Objectif de l'Application
 
-[Description en 2-3 phrases de ce que fait l'app et pourquoi]
+FuelMap permet aux automobilistes français de trouver les stations-service les moins chères autour d'eux, de suivre leurs dépenses carburant et de voir les économies réalisées. L'app s'appuie sur les données ouvertes data.gouv.fr enrichies par la communauté.
 
 ### 1.2 Proposition de Valeur
 
-> "[UVP en 1 phrase]"
+> "Trouve le carburant le moins cher près de toi et vois combien tu économises."
 
 ### 1.3 Cibles Utilisateurs
 
 | Segment | Description | Priorité |
 |---------|-------------|----------|
-| Primaire | [Description] | P0 |
-| Secondaire | [Description] | P1 |
-| Tertiaire | [Description] | P2 |
+| Primaire | Conducteurs réguliers (trajets domicile-travail) | P0 |
+| Secondaire | Gros rouleurs (commerciaux, VRP) | P1 |
+| Tertiaire | Familles multi-véhicules | P2 |
 
 ---
 
@@ -36,312 +36,361 @@
 
 ### 2.1 Persona Principal
 
-**Nom** : [Prénom fictif]
-- **Âge** : [X ans]
-- **Situation** : [Contexte personnel/pro]
-- **Objectif** : [Ce qu'il veut accomplir]
-- **Frustrations** : [Pain points actuels]
-- **Tech-savviness** : [Faible/Moyen/Élevé]
+**Nom** : Thomas
+- **Âge** : 35 ans
+- **Situation** : Cadre, 50km de trajet quotidien, Peugeot 308 diesel
+- **Objectif** : Réduire sa facture carburant (~200€/mois)
+- **Frustrations** : Ne sait jamais où sont les stations les moins chères, pas de visibilité sur ses dépenses
+- **Tech-savviness** : Moyen (utilise Waze, apps bancaires)
 
 ### 2.2 User Journey Principal
 
 ```
-[Trigger]          [Découverte]        [Activation]         [Engagement]        [Rétention]
-                                                                                 
-    |                   |                   |                    |                   |
-[Problème]    ->  [App Store]    ->  [Onboarding]    ->  [1ère action]    ->  [Usage régulier]
-                                                                                
-                                         |                    |                   |
-                                   [Création compte]   [Aha moment]       [Conversion]
+[Besoin de faire le plein]  ->  [Ouvre FuelMap]  ->  [Voit carte + prix]  ->  [Choisit station]  ->  [Navigue]  ->  [Fait le plein]  ->  [Logge son plein]  ->  [Voit économies]
 ```
 
 ### 2.3 Jobs-to-be-Done
 
 | JTBD | Situation | Motivation | Outcome |
 |------|-----------|------------|---------|
-| #1 | Quand [situation] | Je veux [action] | Pour [résultat] |
-| #2 | Quand [situation] | Je veux [action] | Pour [résultat] |
-| #3 | Quand [situation] | Je veux [action] | Pour [résultat] |
+| #1 | Quand je dois faire le plein | Je veux trouver la station la moins chère | Pour économiser de l'argent |
+| #2 | Quand je fais le plein | Je veux logger mes dépenses | Pour suivre mon budget carburant |
+| #3 | Quand je consulte l'app | Je veux voir mes économies | Pour me sentir malin et motivé |
 
 ---
 
 ## 3. Architecture Fonctionnelle
 
-### 3.1 Modules Principaux
+### 3.1 Modules MVP
 
 ```
-                      APPLICATION                         
-             |             |             |               
-   AUTH         CORE        PREMIUM       SETTINGS    
-                                                      
- - Login      - [Feature]  - [Feature]  - Profil      
- - Register   - [Feature]  - [Feature]  - Préférences 
- - Forgot PW  - [Feature]  - Paywall    - Compte      
+                    FUELMAP MVP
+                         |
+                      CARTE
+
+              - Carte stations
+              - Filtres carburant
+              - Détail station
+              - Navigation externe
 ```
 
-### 3.2 Matrice Fonctionnalités
+### 3.2 Matrice Fonctionnalités MVP
 
-| ID | Fonctionnalité | Priorité | Version | Free | Premium |
-|----|----------------|----------|---------|------|---------|
-| F01 | [Nom] | P0 (MVP) | 1.0 | ✓ | ✓ |
-| F02 | [Nom] | P0 (MVP) | 1.0 | ✓ | ✓ |
-| F03 | [Nom] | P0 (MVP) | 1.0 | L | ✓ |
-| F04 | [Nom] | P1 | 1.1 | | |
-| F05 | [Nom] | P2 | 2.0 | | |
-
-**Légende priorités** :
-- P0 : MVP - Indispensable au lancement
-- P1 : Quick wins post-launch
-- P2 : Différenciation v2
+| ID | Fonctionnalité | Description | Effort | Free | Premium |
+|----|----------------|-------------|--------|------|---------|
+| M1 | Carte stations | Carte + prix + estimation plein + code couleur | M | ✓ | ✓ |
+| M2 | Filtres | Carburant, distance, prix max, fraîcheur | S | ✓ | ✓ |
+| M3 | Détail station | Prix, adresse, horaires, services, fraîcheur | S | ✓ | ✓ |
+| M4 | Navigation externe | Deeplink Apple/Google Maps | S | ✓ | ✓ |
+| M5 | Recherche trajet | Stations sur une route avec détour estimé | M | ✓ | ✓ |
 
 ---
 
 ## 4. Fonctionnalités Détaillées
 
-### F01 - [Nom de la Fonctionnalité]
+### M1 - Carte Stations
 
-**Description** : [Description claire de ce que fait la feature]
+**Description** : Affichage d'une carte interactive avec les stations-service et leurs prix, incluant une estimation du prix du plein personnalisée.
 
 **User Stories** :
+
 | ID | En tant que | Je veux | Pour | Critères d'acceptation |
 |----|-------------|---------|------|------------------------|
-| US01.1 | [Utilisateur] | [Action] | [Bénéfice] | - [Critère 1]<br>- [Critère 2] |
-| US01.2 | [Utilisateur] | [Action] | [Bénéfice] | - [Critère 1] |
+| US1.1 | Utilisateur | Voir les stations autour de moi sur une carte | Trouver où faire le plein | - Carte centrée sur ma position GPS<br>- Stations visibles dans rayon 10km<br>- Chargement < 2s |
+| US1.2 | Utilisateur | Voir le prix du carburant sur chaque station | Comparer rapidement | - Prix affiché sur marker<br>- Couleur selon prix (vert/orange/rouge) |
+| US1.3 | Utilisateur | Voir le prix estimé de mon plein | Savoir combien je vais payer | - Calcul : prix/L × volume réservoir<br>- Affichage "1.65€/L (~58€)" |
+| US1.4 | Utilisateur | Voir si le prix est récent | Éviter les prix obsolètes | - Badge fraîcheur (vert <24h, orange 1-3j, gris >3j)<br>- Texte "il y a 2h" |
+| US1.5 | Utilisateur | Me recentrer sur ma position | Retrouver les stations proches | - Bouton "recentrer" visible |
 
 **Règles métier** :
-- RM01.1 : [Règle]
-- RM01.2 : [Règle]
+- RM1.1 : Rayon par défaut 10km, extensible à 25km
+- RM1.2 : Clustering des markers si zoom out (>50 stations visibles)
+- RM1.3 : Volume réservoir basé sur type véhicule (citadine 40L, berline 50L, SUV 60L, utilitaire 70L)
+- RM1.4 : Si pas de type véhicule renseigné, afficher uniquement prix/L
+- RM1.5 : Code couleur prix : vert = 20% moins cher que moyenne zone, rouge = 20% plus cher
 
 **États possibles** :
-| État | Description | Action suivante |
-|------|-------------|-----------------|
-| Initial | [Description] | [Action] |
-| En cours | [Description] | [Action] |
-| Complété | [Description] | [Action] |
-| Erreur | [Description] | [Action] |
+
+| État | Description | Action |
+|------|-------------|--------|
+| Chargement | Récupération position + stations | Afficher skeleton map |
+| Affiché | Carte avec stations | Interaction possible |
+| Erreur GPS | Position indisponible | Message + bouton réessayer |
+| Aucune station | Pas de station dans le rayon | Message + suggestion étendre rayon |
 
 **Métriques de succès** :
-- [Métrique] : [Objectif]
+- 80% des utilisateurs trouvent une station en < 30s
+- Temps de chargement carte < 2s
 
 ---
 
-### F02 - [Nom de la Fonctionnalité]
+### M2 - Filtres Carburant
 
-[Répéter le template ci-dessus pour chaque feature]
-
----
-
-### F03 - Authentification
-
-**Description** : Gestion de l'inscription, connexion et récupération de mot de passe
+**Description** : Filtrage des stations par type de carburant et fraîcheur des prix.
 
 **User Stories** :
+
 | ID | En tant que | Je veux | Pour | Critères d'acceptation |
 |----|-------------|---------|------|------------------------|
-| US03.1 | Visiteur | M'inscrire avec email | Créer un compte | - Email valide requis<br>- MDP 8+ caractères<br>- Confirmation email |
-| US03.2 | Visiteur | M'inscrire avec Apple/Google | Créer un compte rapidement | - OAuth fonctionnel<br>- Récupération nom/email |
-| US03.3 | Utilisateur | Me connecter | Accéder à mes données | - Email + MDP<br>- Session persistante |
-| US03.4 | Utilisateur | Réinitialiser mon MDP | Récupérer l'accès | - Email de reset<br>- Lien valide 24h |
+| US2.1 | Utilisateur | Filtrer par type de carburant | Voir uniquement ce qui m'intéresse | - Options : SP95, SP95-E10, SP98, Diesel, E85, GPL<br>- Sélection persistante |
+| US2.2 | Utilisateur | Filtrer par distance | Ajuster le rayon de recherche | - Slider 5km à 50km<br>- Par défaut : 10km |
+| US2.3 | Utilisateur | Filtrer par prix max | Ne voir que les stations abordables | - Slider 1.00€ à 2.50€/L<br>- Par défaut : pas de limite |
+| US2.4 | Utilisateur | Filtrer par fraîcheur des prix | Voir uniquement les prix fiables | - Options : < 24h, < 3 jours, Tous<br>- Par défaut : Tous |
 
 **Règles métier** :
-- RM03.1 : Email unique par compte
-- RM03.2 : MDP minimum 8 caractères, 1 majuscule, 1 chiffre
-- RM03.3 : Session expire après 30 jours d'inactivité
-- RM03.4 : Maximum 5 tentatives de connexion puis blocage 15 min
+- RM2.1 : Le filtre carburant est sauvegardé en préférence utilisateur
+- RM2.2 : Le filtre distance est sauvegardé
+- RM2.3 : Le filtre prix max n'est pas sauvegardé (reset à chaque session)
+- RM2.4 : Le filtre fraîcheur n'est pas sauvegardé (reset à chaque session)
+- RM2.5 : Les stations sans prix pour le carburant sélectionné sont masquées
+
+**Métriques de succès** :
+- 95% des utilisateurs filtrent correctement
 
 ---
 
-### F04 - Onboarding
+### M3 - Détail Station
 
-**Description** : Parcours de première utilisation pour collecter les préférences et activer l'utilisateur
+**Description** : Écran détaillé d'une station avec toutes ses informations.
 
-**Écrans onboarding** :
-| # | Écran | Objectif | Champs/Actions |
-|---|-------|----------|----------------|
-| 1 | Bienvenue | Accueillir | [Bouton Commencer] |
-| 2 | [Question 1] | [Objectif] | [Options] |
-| 3 | [Question 2] | [Objectif] | [Options] |
-| 4 | Permissions | Demander accès | [Notifications/Localisation/etc.] |
-| 5 | Récap | Confirmer choix | [Bouton Terminer] |
+**User Stories** :
+
+| ID | En tant que | Je veux | Pour | Critères d'acceptation |
+|----|-------------|---------|------|------------------------|
+| US3.1 | Utilisateur | Voir tous les prix de la station | Comparer les carburants | - Liste tous carburants disponibles<br>- Prix + date MAJ pour chacun |
+| US3.2 | Utilisateur | Voir l'adresse complète | Savoir où aller | - Adresse formatée<br>- Distance depuis ma position |
+| US3.3 | Utilisateur | Voir les horaires | Savoir si c'est ouvert | - Horaires par jour<br>- Indicateur "Ouvert/Fermé" |
+| US3.4 | Utilisateur | Voir les services | Savoir ce qui est disponible | - Liste : lavage, boutique, gonflage, DAB, etc. |
+| US3.5 | Utilisateur | Voir la fraîcheur du prix | Évaluer la fiabilité | - "Mis à jour il y a 2h"<br>- Source (data.gouv / communauté) |
 
 **Règles métier** :
-- RM04.1 : Onboarding peut être skip après écran 1
-- RM04.2 : Données sauvegardées à chaque étape
-- RM04.3 : Onboarding affiché une seule fois
+- RM3.1 : Afficher estimation prix du plein pour chaque carburant
+- RM3.2 : Indiquer clairement si ouvert 24h/24
+
+**Métriques de succès** :
+- 70% des utilisateurs consultent le détail après tap sur marker
 
 ---
 
-## 5. Écrans & Navigation
+### M4 - Navigation Externe
 
-### 5.1 Arborescence
+**Description** : Lancer la navigation vers une station dans Apple Maps ou Google Maps.
+
+**User Stories** :
+
+| ID | En tant que | Je veux | Pour | Critères d'acceptation |
+|----|-------------|---------|------|------------------------|
+| US5.1 | Utilisateur | Naviguer vers la station | Y aller facilement | - Bouton "Y aller" visible<br>- Ouvre app de navigation par défaut |
+| US5.2 | Utilisateur | Choisir mon app de navigation | Utiliser celle que je préfère | - Si plusieurs apps dispo : choix Apple/Google Maps<br>- Mémoriser préférence |
+
+**Règles métier** :
+- RM4.1 : Deeplink avec coordonnées GPS de la station
+- RM4.2 : Si une seule app de navigation disponible, l'ouvrir directement
+- RM4.3 : Préférence navigation sauvegardée en local
+
+**Métriques de succès** :
+- 60% des utilisateurs utilisent la navigation
+
+---
+
+### M5 - Recherche Trajet
+
+**Description** : Permettre aux utilisateurs de rechercher un trajet et voir toutes les stations le long de la route, avec estimation du détour.
+
+**User Stories** :
+
+| ID | En tant que | Je veux | Pour | Critères d'acceptation |
+|----|-------------|---------|------|------------------------|
+| US5.1 | Utilisateur | Rechercher un trajet (départ → arrivée) | Planifier mes arrêts carburant | - Champ départ (position par défaut)<br>- Champ arrivée (autocomplete)<br>- Historique des recherches |
+| US5.2 | Utilisateur | Voir les stations sur ma route | Choisir où m'arrêter | - Tracé de la route sur la carte<br>- Markers stations le long du trajet<br>- Filtrage par distance à la route |
+| US5.3 | Utilisateur | Voir le détour pour chaque station | Évaluer si ça vaut le coup | - Distance du détour (km)<br>- Temps estimé du détour (min)<br>- Distance depuis le départ |
+| US5.4 | Utilisateur | Trier les stations du trajet | Trouver la meilleure option | - Tri par prix<br>- Tri par distance depuis départ<br>- Tri par détour minimum |
+
+**Règles métier** :
+- RM5.1 : Stations affichées si à moins de 5km de la route
+- RM5.2 : Calcul du détour = distance aller-retour depuis la route
+- RM5.3 : Temps détour estimé à 50km/h en moyenne (sortie autoroute)
+- RM5.4 : Historique des 5 dernières recherches sauvegardé en local
+- RM5.5 : Route calculée via API de routing (OSRM ou similaire)
+
+**Composants** :
+- Barre de recherche trajet (bottom sheet)
+- Polyline route sur la carte
+- Header sticky avec infos trajet
+- Station bottom sheet enrichi (infos détour)
+
+**Métriques de succès** :
+- 30% des utilisateurs utilisent la recherche trajet
+- 50% des recherches aboutissent à un clic sur station
+
+---
+
+## 5. Onboarding
+
+### 5.1 Parcours Onboarding
+
+| # | Écran | Objectif | Contenu |
+|---|-------|----------|---------|
+| 1 | Bienvenue | Accueillir | Logo + "Trouve le carburant le moins cher" + [Commencer] |
+| 2 | Type de véhicule | Personnaliser estimation plein | Choix : Citadine / Berline / SUV / Utilitaire |
+| 3 | Carburant | Définir préférence | Choix : SP95 / SP95-E10 / SP98 / Diesel / E85 / GPL |
+| 4 | Localisation | Demander permission GPS | Explication bénéfice + demande permission |
+
+**Règles métier** :
+- RM-OB1 : Écrans 2-3 peuvent être skip (valeurs par défaut : Berline + Diesel)
+- RM-OB2 : Données sauvegardées en local à chaque étape
+- RM-OB3 : Onboarding affiché une seule fois par device
+
+---
+
+## 6. Écrans & Navigation
+
+### 6.1 Arborescence
 
 ```
 App
-   Splash Screen
-   Auth (non connecté)
-      Login
-      Register
-      Forgot Password
-   Onboarding (1ère fois)
-      Step 1
-      Step 2
-      Step N
-   Main (connecté)
-      Tab 1 - [Nom]
-         Liste/Home
-         Détail
-      Tab 2 - [Nom]
-      Tab 3 - [Nom]
-      Tab 4 - Profil
-          Paramètres
-          Abonnement
-          Support
-   Modals
-      Paywall
-      Confirmations
-   Overlays
-       Loading
-       Success
-       Error
+├── Splash Screen
+├── Onboarding (1ère fois)
+│   ├── Bienvenue
+│   ├── Type véhicule
+│   ├── Carburant
+│   └── Permission GPS
+└── Main (écran unique)
+    ├── Carte (Home)
+    ├── Filtres (bottom sheet)
+    ├── Détail station (bottom sheet)
+    │   └── Navigation externe
+    └── Paramètres (bottom sheet)
+        └── Préférences (véhicule, carburant)
 ```
 
-### 5.2 Liste des Écrans
+### 6.2 Liste des Écrans MVP
 
 | ID | Écran | Accès | Description |
 |----|-------|-------|-------------|
 | S01 | Splash | Auto | Logo + chargement |
-| S02 | Login | Auth | Connexion email/social |
-| S03 | Register | Auth | Inscription |
-| S04 | Onboarding | Post-register | X étapes |
-| S05 | Home | Tab 1 | [Description] |
-| S06 | [Écran] | [Accès] | [Description] |
-| S07 | Paywall | Modal | Conversion premium |
-| S08 | Settings | Tab Profil | Paramètres |
+| S02 | Onboarding | 1ère fois | 4 étapes |
+| S03 | Carte | Home | Carte stations + markers |
+| S04 | Filtres | Bottom sheet depuis carte | Sélection carburant + fraîcheur |
+| S05 | Détail station | Tap marker | Infos complètes station |
+| S06 | Paramètres | Bottom sheet | Préférences véhicule/carburant |
 
 ---
 
-## 6. Règles Métier
+## 7. Règles Métier Générales
 
-### 6.1 Règles Générales
+### 7.1 Règles Générales
 
 | ID | Règle | Impact |
 |----|-------|--------|
-| RG01 | [Description règle] | [Où elle s'applique] |
-| RG02 | [Description règle] | [Où elle s'applique] |
+| RG01 | App utilisable sans compte | Toutes les fonctionnalités MVP |
+| RG02 | Données stockées en local | Préférences véhicule/carburant |
+| RG03 | GPS requis pour afficher carte | Demandé à l'onboarding |
+| RG04 | Données stations : data.gouv.fr | Refresh quotidien automatique |
 
-### 6.2 Règles Freemium
+### 7.2 Règles de Validation
 
-| ID | Règle | Free | Premium |
-|----|-------|------|---------|
-| RF01 | [Limite 1] | [Valeur] | Illimité |
-| RF02 | [Limite 2] | [Valeur] | Illimité |
-| RF03 | [Feature] | ✗ | ✓ |
-
-### 6.3 Règles de Validation
-
-| Champ | Type | Obligatoire | Validation | Message erreur |
-|-------|------|-------------|------------|----------------|
-| Email | String | Oui | Format email valide | "Email invalide" |
-| Password | String | Oui | Min 8 car, 1 maj, 1 chiffre | "MDP trop faible" |
-| [Champ] | [Type] | [O/N] | [Règle] | [Message] |
+Pas de validation utilisateur requise pour le MVP (pas de saisie manuelle).
 
 ---
 
-## 7. Notifications
+## 8. Contraintes & Edge Cases
 
-### 7.1 Push Notifications
-
-| ID | Trigger | Titre | Message | Timing |
-|----|---------|-------|---------|--------|
-| N01 | [Événement] | [Titre] | [Corps] | [Quand] |
-| N02 | Inactivité 3j | "Tu nous manques!" | "[Message rétention]" | J+3 |
-
-### 7.2 Emails Transactionnels
-
-| ID | Trigger | Sujet | Template |
-|----|---------|-------|----------|
-| E01 | Inscription | "Bienvenue sur [App]!" | welcome.html |
-| E02 | Reset password | "Réinitialisation MDP" | reset.html |
-
----
-
-## 8. Monétisation
-
-### 8.1 Modèle Tarifaire
-
-| Plan | Prix/mois | Prix/an | Économie |
-|------|-----------|---------|----------|
-| Free | 0€ | 0€ | - |
-| Premium | X€ | X€ | X% |
-
-### 8.2 Features par Plan
-
-| Feature | Free | Premium |
-|---------|------|---------|
-| [Feature 1] | ✓ | ✓ |
-| [Feature 2] | Limité (X) | Illimité |
-| [Feature 3] | ✗ | ✓ |
-| Publicités | Oui | Non |
-
-### 8.3 Triggers Paywall
-
-| Moment | Contexte | Message |
-|--------|----------|---------|
-| [Trigger 1] | [Quand l'utilisateur...] | [Texte paywall] |
-| [Trigger 2] | [Quand l'utilisateur...] | [Texte paywall] |
-
----
-
-## 9. Contraintes & Edge Cases
-
-### 9.1 Contraintes Techniques
+### 8.1 Contraintes Techniques
 
 | Contrainte | Impact | Solution |
 |------------|--------|----------|
-| Offline | [Impact] | [Cache local / Message] |
-| Connexion lente | [Impact] | [Loading states / Skeleton] |
-| Anciens devices | [Impact] | [Version min iOS/Android] |
+| Offline | Carte inutilisable | Message "Connexion requise" |
+| GPS refusé | Carte non centrée | Recherche manuelle par ville |
+| Connexion lente | Chargement long | Skeleton + cache local |
 
-### 9.2 Edge Cases
+### 8.2 Edge Cases
 
 | Cas | Comportement attendu |
 |-----|---------------------|
-| Utilisateur sans internet | [Comportement] |
-| Session expirée en cours d'action | [Comportement] |
-| Paiement échoué | [Comportement] |
-| Double-tap rapide | [Comportement] |
+| Utilisateur sans internet | Message erreur + retry |
+| GPS imprécis | Rayon élargi automatiquement |
+| Aucune station dans rayon | Message + bouton "Étendre à 25km" |
+| Prix très ancien (>7j) | Badge gris + mention "prix ancien" |
 
-### 9.3 Gestion des Erreurs
+### 8.3 Gestion des Erreurs
 
 | Type erreur | Message utilisateur | Action |
 |-------------|---------------------|--------|
-| Réseau | "Connexion impossible. Réessayer ?" | Bouton retry |
-| Serveur | "Oups, une erreur est survenue" | Bouton retry + support |
-| Validation | [Message spécifique au champ] | Highlight champ |
+| Réseau | "Connexion impossible" | Bouton retry |
+| GPS | "Position indisponible" | Recherche manuelle |
+| Serveur | "Une erreur est survenue" | Retry + support |
+| Validation | Message spécifique | Highlight champ |
 
 ---
 
-## 10. Roadmap Features
+## 9. Data Model
 
-### Version 1.0 (MVP)
-- [x] F01 - [Feature]
-- [x] F02 - [Feature]
-- [x] F03 - Auth
-- [x] F04 - Onboarding
+### 9.1 Données locales (AsyncStorage)
 
-### Version 1.1
-- [ ] F05 - [Feature]
-- [ ] F06 - [Feature]
+```
+preferences
+├── type_vehicule (enum: citadine/berline/suv/utilitaire)
+├── volume_reservoir (int: 40/50/60/70)
+├── carburant_defaut (enum: sp95/sp95e10/sp98/diesel/e85/gpl)
+├── app_navigation (enum: apple_maps/google_maps)
+└── onboarding_completed (bool)
+```
 
-### Version 2.0
-- [ ] F07 - [Feature majeure]
-- [ ] [Feature]
+### 9.2 Données API (data.gouv.fr)
 
-### Backlog (non priorisé)
-- [ ] [Idée 1]
-- [ ] [Idée 2]
+```
+stations
+├── id (string, ID data.gouv)
+├── nom (string)
+├── adresse (string)
+├── ville (string)
+├── code_postal (string)
+├── lat (decimal)
+├── lng (decimal)
+├── horaires (json)
+├── services (json array)
+└── prix[] (liste des prix par carburant)
+    ├── carburant (enum)
+    ├── prix (decimal)
+    └── maj (timestamp)
+```
 
 ---
 
-**Document validé le** : [Date]
-**Version** : 1.0
+## 10. Métriques de Succès MVP
+
+| Métrique | Objectif | Mesure |
+|----------|----------|--------|
+| Temps trouver station | < 30s | 80% users |
+| Utilisation navigation | 60% | Des sessions |
+| Rétention J7 | 30% | Standard apps utils |
+| Note App Store | 4.0+ | Moyenne avis |
+
+---
+
+## 11. Hors Scope MVP
+
+Les fonctionnalités suivantes sont explicitement exclues du MVP :
+
+- Authentification / création de compte
+- Signalement prix par les utilisateurs
+- Historique des pleins
+- Calcul des économies
+- Notifications prix bas
+- Gamification (badges, leaderboard)
+- Favoris stations
+- Mode liste
+- Premium/abonnement
+- Stats avancées
+- Widget
+- Apple Watch / CarPlay
+- Multi-véhicules
+- Export données
+- Coaching éco-conduite
+
+---
+
+**Document validé le** : 29/11/2025
+**Version** : 1.0 MVP
+**Estimation effort** : ~10 jours de développement
