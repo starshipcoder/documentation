@@ -4,9 +4,10 @@
 
 | Élément | Valeur |
 |---------|--------|
-| **Nom de l'app** | FuelMap |
-| **Version** | 1.0.0 (MVP) |
+| **Nom de l'app** | Plein Malin (FuelMap) |
+| **Version** | 0.0.4 (MVP) |
 | **Date création** | 29/11/2025 |
+| **Dernière mise à jour** | 01/12/2025 |
 
 ---
 
@@ -18,13 +19,13 @@
                       FRONTEND
                      [Flutter]
                          |
-            +-----------+-----------+
-            |           |           |
-      data.gouv.fr   Sentry    Mixpanel
-       (Stations)   (Errors)  (Analytics)
-            |
-      [Cache Drift]
-      (Offline mode)
+      +--------+---------+---------+---------+
+      |        |         |         |         |
+data.gouv.fr Firebase  Firebase  RevenueCat OSRM
+ (Stations) Analytics Crashlytics (IAP)   (Routes)
+      |
+  [Cache Local]
+  (SharedPrefs)
 ```
 
 **Architecture sans serveur** : L'app appelle directement l'API data.gouv.fr et cache les données localement.
@@ -33,16 +34,18 @@
 
 | Couche | Technologie | Justification |
 |--------|-------------|---------------|
-| **Frontend** | Flutter 3.35+ | Cross-platform, cohérence avec autres apps |
-| **State Management** | flutter_bloc 9.x (Cubit) | Cohérence EasyWay, séparation logique/UI |
-| **Maps** | flutter_map | OpenStreetMap, gratuit, pas de clé API |
+| **Frontend** | Flutter 3.x | Cross-platform, cohérence avec autres apps |
+| **State Management** | flutter_bloc 8.x (Cubit) | Cohérence EasyWay, séparation logique/UI |
+| **Maps** | flutter_map 7.x | OpenStreetMap, gratuit, pas de clé API |
 | **Architecture** | Clean Architecture | Maintenabilité, testabilité |
 | **DI** | Container Pattern | Cohérence EasyWay |
 | **HTTP** | Dio | Interceptors, cache, retry |
-| **Cache stations** | Drift (SQLite) | Requêtes spatiales, offline |
+| **Cache stations** | SharedPreferences + JSON | Simple, suffisant pour MVP |
 | **Préférences** | SharedPreferences | Simple pour settings user |
-| **Analytics** | Mixpanel | Events tracking, funnels |
-| **Crash reporting** | Sentry | Monitoring erreurs |
+| **Analytics** | Firebase Analytics | Gratuit, intégré Firebase |
+| **Crash reporting** | Firebase Crashlytics | Gratuit, intégré Firebase |
+| **In-App Purchase** | RevenueCat | Paywalls, gestion abonnements |
+| **Routing** | OSRM | Open source, calcul itinéraires |
 
 ### 1.3 Versions Minimales
 
@@ -50,7 +53,7 @@
 |------------|-------------|--------|
 | iOS | 14.0 | 95%+ market coverage |
 | Android | API 24 (7.0) | 95%+ market coverage |
-| Flutter | 3.35+ | Dernières features stables |
+| Flutter | 3.x | Stable |
 | Dart | 3.9+ | Records, patterns |
 
 ---
@@ -564,16 +567,15 @@ enum NavigationApp { appleMaps, googleMaps }
 
 ## 6. Dépendances
 
-### 6.1 pubspec.yaml
+### 6.1 pubspec.yaml (Actuel)
 
 ```yaml
 name: fuelmap
 description: Trouve le carburant le moins cher près de toi
-version: 1.0.0+1
+version: 0.0.4+004
 
 environment:
-  sdk: '>=3.8.0 <4.0.0'
-  flutter: '>=3.35.0'
+  sdk: ^3.9.2
 
 dependencies:
   flutter:
@@ -581,72 +583,62 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
+  cupertino_icons: ^1.0.8
+
   # State Management
-  bloc: ^9.0.0
-  flutter_bloc: ^9.0.0
+  bloc: ^8.1.4
+  flutter_bloc: ^8.1.6
 
   # Navigation
-  go_router: ^14.0.0
+  go_router: ^14.6.2
 
   # Network
-  dio: ^5.0.0
-  json_annotation: ^4.9.0
+  dio: ^5.7.0
+  http: ^1.2.2
 
   # Maps & Location
-  flutter_map: ^8.2.2
-  flutter_map_marker_cluster: ^8.2.2
-  latlong2: ^0.9.0
-  geolocator: ^14.0.2
-  permission_handler: ^12.0.1
-  map_launcher: ^4.4.2
+  flutter_map: ^7.0.2
+  flutter_map_marker_cluster: ^1.4.0
+  latlong2: ^0.9.1
+  geolocator: ^13.0.2
+  permission_handler: ^11.3.1
+  map_launcher: ^3.5.0
 
   # Storage
-  shared_preferences: ^2.2.0
-  drift: ^2.20.0
-  sqlite3_flutter_libs: ^0.5.0
+  shared_preferences: ^2.3.3
 
-  # Analytics & Monitoring
-  sentry_flutter: ^9.8.0
-  mixpanel_flutter: ^2.3.0
+  # Firebase
+  firebase_core: ^3.8.1
+  firebase_analytics: ^11.4.1
+  firebase_crashlytics: ^4.2.1
+  firebase_remote_config: ^5.2.1
+
+  # In-App Purchases (RevenueCat)
+  purchases_flutter: ^9.9.9
+  purchases_ui_flutter: ^9.9.9
 
   # Utils
+  package_info_plus: ^8.3.0
+  url_launcher: ^6.3.1
   intl: ^0.20.2
   equatable: ^2.0.5
   collection: ^1.18.0
 
-  # Env
-  envied: ^1.1.1
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  integration_test:
-    sdk: flutter
-
-  # Code generation
-  build_runner: ^2.4.0
-  json_serializable: ^6.5.3
-  drift_dev: ^2.20.0
-  envied_generator: ^1.1.1
-
-  # Testing
-  mocktail: ^1.0.0
-  bloc_test: ^10.0.0
-
-  # Linting
   flutter_lints: ^5.0.0
-
-  # i18n
-  intl_utils: ^2.4.0
+  mocktail: ^1.0.4
+  bloc_test: ^9.1.7
+  flutter_launcher_icons: ^0.14.3
+  flutter_native_splash: ^2.4.4
 
 flutter:
   uses-material-design: true
-  generate: true
 
-flutter_intl:
-  enabled: true
-  arb_dir: lib/l10n
-  output_dir: lib/l10n/generated
+  assets:
+    - assets/images/
+    - assets/data/
 ```
 
 ---
